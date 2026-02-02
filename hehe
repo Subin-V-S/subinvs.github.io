@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For Booboo 💖</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.18);
+      padding: 35px 45px;
+      border-radius: 22px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      max-width: 420px;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.15em;
+      margin-bottom: 25px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      font-size: 1em;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+    }
+
+    .option {
+      background: white;
+      color: #ff4d6d;
+    }
+
+    .correct {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 0.95em;
+      min-height: 22px;
+      color: #fff3f6;
+    }
+
+    /* ❤️ HEART ANIMATION */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 22px;
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) scale(1.8);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h1 id="question">Hey Booboo 💕</h1>
+  <p id="text">Let’s see how well you remember us 😌</p>
+  <div id="options"></div>
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+let index = 0;
+let heartsStarted = false;
+
+const quiz = [
+  {
+    q: "When did we fall in love? 💘",
+    options: [
+      { text: "I don’t remember 😶", correct: false, msg: "Awww come on… try harder 😤" },
+      { text: "It just happened slowly ❤️", correct: true },
+      { text: "Yesterday 😏", correct: false, msg: "Nice try 😂 but no" }
+    ]
+  },
+  {
+    q: "Where did we kiss? 😘",
+    options: [
+      { text: "In my dreams 😴", correct: false, msg: "Haha not that one 😄" },
+      { text: "Some random place 🙈", correct: false, msg: "Hmm… not quite 😉" },
+      { text: "Our special place 💕", correct: true }
+    ]
+  },
+  {
+    q: "How was the weather that day? 🌤️",
+    options: [
+      { text: "Cold & gloomy ❄️", correct: false, msg: "Nopeee 😅" },
+      { text: "Perfect, just like us ☀️", correct: true },
+      { text: "I was busy noticing you 😏", correct: false, msg: "Smooth… but still wrong 😌" }
+    ]
+  },
+  {
+    q: "Do you still remember it? 🥺",
+    options: [
+      { text: "Every single detail ❤️", correct: true },
+      { text: "A little bit 🤔", correct: false, msg: "Only a little?? 😭" },
+      { text: "What are you talking about 😆", correct: false, msg: "EXCUSE ME?? 😤" }
+    ]
+  },
+  {
+    q: "Do you remember our promises? 🤞",
+    options: [
+      { text: "Of course, always ❤️", correct: true },
+      { text: "Some of them 😬", correct: false, msg: "All of them 😠" },
+      { text: "We made promises? 😳", correct: false, msg: "Wow… unbelievable 😒" }
+    ]
+  },
+  {
+    q: "Are you good, kunji? 😌",
+    options: [
+      { text: "Only when I’m with you 💕", correct: true },
+      { text: "Sometimes 😇", correct: false, msg: "Hmm suspicious 😏" },
+      { text: "No 😈", correct: false, msg: "HEY 😤 behave!" }
+    ]
+  }
+];
+
+function loadQuestion() {
+  document.getElementById("question").innerText = `Question ${index + 1}`;
+  document.getElementById("text").innerText = quiz[index].q;
+  document.getElementById("message").innerText = "";
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  quiz[index].options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt.text;
+    btn.className = opt.correct ? "correct" : "option";
+
+    btn.onclick = () => {
+      if (opt.correct) {
+        startHearts();
+        index++;
+        if (index < quiz.length) {
+          loadQuestion();
+        } else {
+          showValentine();
+        }
+      } else {
+        document.getElementById("message").innerText = opt.msg;
+      }
+    };
+
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function showValentine() {
+  document.getElementById("card").innerHTML = `
+    <h1>Booboo… 💖</h1>
+    <p>After all this… will you be my Valentine? 🥰</p>
+    <button class="correct" onclick="yes()">YES ❤️</button>
+    <button class="option" id="noBtn" onmouseover="moveNo()">NO 😅</button>
+  `;
+}
+
+function yes() {
+  document.getElementById("card").innerHTML = `
+    <h1>YAYYYY 🎉💘</h1>
+    <p>Happy Valentine’s Day, Booboo ❤️<br>
+    I love you 🥰</p>
+  `;
+}
+
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.transform = `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px)`;
+}
+
+/* ❤️ HEART FUNCTIONS */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 6000);
+}
+
+function startHearts() {
+  if (!heartsStarted) {
+    setInterval(createHeart, 400);
+    heartsStarted = true;
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
