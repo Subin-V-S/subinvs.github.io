@@ -1,272 +1,253 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>For Booboo 💖</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
-      text-align: center;
-      overflow: hidden;
-    }
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <title>For Booboo 💖</title>  
+  <style>  
+    body {  
+      margin: 0;  
+      height: 100vh;  
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      font-family: 'Segoe UI', sans-serif;  
+      color: white;  
+      text-align: center;  
+      overflow: hidden;  
+    }  .card {  
+  background: rgba(255,255,255,0.18);  
+  padding: 35px 45px;  
+  border-radius: 22px;  
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);  
+  max-width: 420px;  
+  z-index: 2;  
+}  
 
-    .card {
-      background: rgba(255,255,255,0.18);
-      padding: 35px 45px;
-      border-radius: 22px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      max-width: 420px;
-      z-index: 2;
-      transition: transform 0.1s;
-    }
+h1 { font-size: 2em; margin-bottom: 10px; }  
+p { font-size: 1.15em; margin-bottom: 25px; }  
 
-    h1 { font-size: 2em; margin-bottom: 10px; }
-    p { font-size: 1.15em; margin-bottom: 25px; }
+button {  
+  width: 100%;  
+  padding: 12px;  
+  margin: 8px 0;  
+  font-size: 1em;  
+  border: none;  
+  border-radius: 25px;  
+  cursor: pointer;  
+  transition: 0.25s;  
+}  
 
-    button {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      font-size: 1em;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: 0.25s;
-    }
-    button:hover { transform: scale(1.03); }
+button:hover { transform: scale(1.03); }  
 
-    .option { background: white; color: #ff4d6d; }
-    .correct { background: #ff4d6d; color: white; }
+.option { background: white; color: #ff4d6d; }  
+.correct { background: #ff4d6d; color: white; }  
 
-    /* ❤️ HEART ANIMATION */
-    .heart {
-      position: fixed;
-      bottom: -20px;
-      font-size: 22px;
-      animation: floatUp linear forwards;
-      pointer-events: none;
-      opacity: 0.8;
-      z-index: 1;
-    }
-    @keyframes floatUp {
-      from { transform: translateY(0) scale(1); opacity:1; }
-      to { transform: translateY(-110vh) scale(1.8); opacity:0; }
-    }
+.heart {  
+  position: fixed;  
+  bottom: -20px;  
+  font-size: 22px;  
+  animation: floatUp linear forwards;  
+  pointer-events: none;  
+  opacity: 0.8;  
+  z-index: 1;  
+}  
 
-    /* Popup for wrong answers or NO click */
-    #popup {
-      position: fixed;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.9);
-      color: #ff4d6d;
-      padding: 25px 35px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      display: none;
-      font-weight: bold;
-      z-index: 10;
-      text-align: center;
-    }
-  </style>
-</head>
+@keyframes floatUp {  
+  from { transform: translateY(0) scale(1); opacity:1; }  
+  to { transform: translateY(-110vh) scale(1.8); opacity:0; }  
+}  
 
-<body>
-
-<div class="card" id="card">
-  <h1 id="question">Hey Booboo 💕</h1>
-  <p id="text">Let’s see how well you remember us 😌</p>
-  <div id="options"></div>
-</div>
-
-<div id="popup">Oops!</div>
-
-<script>
-let index = 0;
-let heartsStarted = false;
-let noMoves = 0;
-const maxNoMoves = 5;
-
-const quiz = [
-  { q: "When did we fall in love? 💘",
-    options: [
-      { text: "I don’t remember 😶", correct: false, msg: "Awww come on… try harder 😤" },
-      { text: "It just happened slowly ❤️", correct: true },
-      { text: "Yesterday 😏", correct: false, msg: "Nice try 😂 but no" }
-    ]
-  },
-  { q: "Where did we kiss? 😘",
-    options: [
-      { text: "In my dreams 😴", correct: false, msg: "Haha not that one 😄" },
-      { text: "Some random place 🙈", correct: false, msg: "Hmm… not quite 😉" },
-      { text: "Our special place 💕", correct: true }
-    ]
-  },
-  { q: "How was the weather that day? 🌤️",
-    options: [
-      { text: "Cold & gloomy ❄️", correct: false, msg: "Nopeee 😅" },
-      { text: "Perfect, just like us 🌧️", correct: true },
-      { text: "I was busy noticing you 😏", correct: false, msg: "Smooth… but still wrong 😁" }
-    ]
-  },
-  { q: "Do you still remember it? 🥺",
-    options: [
-      { text: "Every single detail ❤️", correct: true },
-      { text: "A little bit 🤔", correct: false, msg: "Only a little?? 😭" },
-      { text: "What are you talking about 😆", correct: false, msg: "EXCUSE ME?? 😤" }
-    ]
-  },
-  { q: "Do you remember our promises? 🤞",
-    options: [
-      { text: "Of course, always ❤️", correct: true },
-      { text: "Some of them 😬", correct: false, msg: "ooo..mm oru rand ennam paranje 😁" },
-      { text: "We made promises? 😳", correct: false, msg: "orkaddii patti (shaking)" }
-    ]
-  },
-  { q: "Are you good, kunji? 😌",
-    options: [
-      { text: "Only when I’m with you 💕", correct: true },
-      { text: "Sometimes 😇", correct: false, msg: "mm i know i know 😁" },
-      { text: "No 😈", correct: false, msg: "ente chundari kutty araa💋" }
-    ]
-  },
-  { q: "Ente chundari kutty ara ",
-    options: [
-      { text: "hehe Njana", correct: true },
-      { text: "Araaaaa", correct: false, msg: "mm mm ara ayirikum 😁" },
-      { text: "vere ara aranna", correct: false, msg: "Arann orkadiii (shaking)" }
-    ]
-  },
-  { q: "are you in love ?😁",
-    options: [
-      { text: "Yessssss", correct: true },
-      { text: "Maybe", correct: false, msg: "mm mm egotta aa first option click cheyadi " },
-      { text: "😁", correct: false, msg: "kinikanda elarkum ariyam annenn ketto 😁" }
-    ]
-  },
-  { q: "Ara aa lucky boyy parayu parayu ",
-    options: [
-      { text: "Marapatti", correct: true },
-      { text: "Subin", correct: false, msg: "njan thane aan but ee option athra porale 😁" },
-      { text: "kurupp", correct: false, msg: "eeeee ninte kuripp alediii " }
-    ]
-  },
-  { q: "Who loves who the most",
-    options: [
-      { text: "Both", correct: true },
-      { text: "Avan", correct: false, msg: "Anno agane allalo 😁 chundari kuuttiii love you da" },
-      { text: "Njan", correct: false, msg: "Nadakuula enikaaa kuudithal ishtam" }
-    ]
-  },
-  { q: "who loves you the most?",
-    options: [
-      { text: "Me", correct: true },
-      { text: "Avan thane", correct: false, msg: "Kurippe njan thaneya 😁 mellilthe option chooseiko chundari atto 😁💋" },
-      { text: "option b", correct: false, msg: "Option B aa patti thane" }
-    ]
-  }
-];
-
-function loadQuestion() {
-  document.getElementById("question").innerText = `Question ${index + 1}`;
-  document.getElementById("text").innerText = quiz[index].q;
-
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-
-  quiz[index].options.forEach(opt=>{
-    const btn = document.createElement("button");
-    btn.innerText = opt.text;
-    btn.className = opt.correct ? "correct" : "option";
-
-    btn.onclick = () => {
-      if(opt.correct){
-        startHearts();
-        index++;
-        if(index<quiz.length){
-          loadQuestion();
-        } else {
-          showValentine();
-        }
-      } else {
-        showPopup(opt.msg);
-      }
-    };
-
-    optionsDiv.appendChild(btn);
-  });
+#popup {  
+  position: fixed;  
+  top: 40%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  background: rgba(255,255,255,0.9);  
+  color: #ff4d6d;  
+  padding: 25px 35px;  
+  border-radius: 20px;  
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);  
+  display: none;  
+  font-weight: bold;  
+  z-index: 10;  
 }
 
-// Popup function
-function showPopup(msg){
-  const popup = document.getElementById("popup");
-  popup.innerText = msg;
-  popup.style.display = "block";
-  setTimeout(()=>popup.style.display="none",1200);
-}
-
-// Valentine screen
-function showValentine(){
-  document.getElementById("card").innerHTML = `
-    <h1>Booboo… 💖</h1>
-    <p>Will you be my Valentine? 🥰</p>
-    <button class="correct" onclick="yes()">YES ❤️</button>
-    <button class="option" id="noBtn" onmouseover="moveNo()" onclick="noClick()">NO 😅</button>
-  `;
-}
-
-// YES button
-function yes(){
-  document.getElementById("card").innerHTML = `
-    <h1>YAYYYY 🎉💘</h1>
-    <p>Happy Valentine’s Day, Booboo ❤️<br>I love you 🥰</p>
-  `;
-}
-
-// NO button hover movement
-function moveNo(){
-  const btn = document.getElementById("noBtn");
-  if(noMoves < maxNoMoves){
-    btn.style.transform = `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px)`;
-    noMoves++;
-  } else {
-    btn.style.transform = "translate(0,0)";
-  }
-}
-
-// NO button click
-function noClick(){
-  showPopup("Oops! You have to click YES ❤️");
-}
-
-/* ❤️ HEART FUNCTIONS */
-function createHeart(){
-  const heart = document.createElement("div");
-  heart.className="heart";
-  heart.innerText="❤️";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.animationDuration=(Math.random()*3+3)+"s";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
-}
-
-function startHearts(){
-  if(!heartsStarted){
-    setInterval(createHeart,400);
-    heartsStarted=true;
-  }
-}
-
-loadQuestion();
-</script>
-</body>
+  </style>  
+</head>  <body>  <div class="card" id="card">  
+  <h1 id="question">Hey Booboo 💕</h1>  
+  <p id="text">Let’s see how well you remember us 😌</p>  
+  <div id="options"></div>  
+</div>  <div id="popup"></div>  <script>  
+let index = 0;  
+let heartsStarted = false;  
+let noMoves = 0;  
+const maxNoMoves = 5;  
+  
+const quiz = [  
+  { q: "When did we fall in love? 💘",  
+    options: [  
+      { text: "I don’t remember 😶", correct: false, msg: "Awww come on… try harder 😤" },  
+      { text: "It just happened slowly ❤️", correct: true },  
+      { text: "Yesterday 😏", correct: false, msg: "Nice try 😂 but no" }  
+    ]  
+  },  
+  { q: "Where did we kiss? 😘",  
+    options: [  
+      { text: "In my dreams 😴", correct: false, msg: "Haha not that one 😄" },  
+      { text: "Some random place 🙈", correct: false, msg: "Hmm… not quite 😉" },  
+      { text: "Our special place 💕", correct: true }  
+    ]  
+  },  
+  { q: "How was the weather that day? 🌤️",  
+    options: [  
+      { text: "Cold & gloomy ❄️", correct: false, msg: "Nopeee 😅" },  
+      { text: "Perfect, just like us 🌧️", correct: true },  
+      { text: "I was busy noticing you 😏", correct: false, msg: "Smooth… but still wrong 😁" }  
+    ]  
+  },  
+  { q: "Do you still remember it? 🥺",  
+    options: [  
+      { text: "Every single detail ❤️", correct: true },  
+      { text: "A little bit 🤔", correct: false, msg: "Only a little?? 😭" },  
+      { text: "What are you talking about 😆", correct: false, msg: "EXCUSE ME?? 😤" }  
+    ]  
+  },  
+  { q: "Do you remember our promises? 🤞",  
+    options: [  
+      { text: "Of course, always ❤️", correct: true },  
+      { text: "Some of them 😬", correct: false, msg: "ooo..mm oru rand ennam paranje 😁" },  
+      { text: "We made promises? 😳", correct: false, msg: "orkaddii patti (shaking)" }  
+    ]  
+  },  
+  { q: "Are you good, kunji? 😌",  
+    options: [  
+      { text: "Only when I’m with you 💕", correct: true },  
+      { text: "Sometimes 😇", correct: false, msg: "mm i know i know 😁" },  
+      { text: "No 😈", correct: false, msg: "ente chundari kutty araa💋" }  
+    ]  
+  },  
+  { q: "Ente chundari kutty ara ",  
+    options: [  
+      { text: "hehe Njana", correct: true },  
+      { text: "Araaaaa", correct: false, msg: "mm mm ara ayirikum 😁" },  
+      { text: "vere ara aranna", correct: false, msg: "Arann orkadiii (shaking)" }  
+    ]  
+  },  
+  { q: "are you in love ?😁",  
+    options: [  
+      { text: "Yessssss", correct: true },  
+      { text: "Maybe", correct: false, msg: "mm mm egotta aa first option click cheyadi " },  
+      { text: "😁", correct: false, msg: "kinikanda elarkum ariyam annenn ketto 😁" }  
+    ]  
+  },  
+  { q: "Ara aa lucky boyy parayu parayu ",  
+    options: [  
+      { text: "Marapatti", correct: true },  
+      { text: "Subin", correct: false, msg: "njan thane aan but ee option athra porale 😁" },  
+      { text: "kurupp", correct: false, msg: "eeeee ninte kuripp alediii " }  
+    ]  
+  },  
+  { q: "Who loves who the most",  
+    options: [  
+      { text: "Both", correct: true },  
+      { text: "Avan", correct: false, msg: "Anno agane allalo 😁 chundari kuuttiii love you da" },  
+      { text: "Njan", correct: false, msg: "Nadakuula enikaaa kuudithal ishtam" }  
+    ]  
+  },  
+  { q: "who loves you the most?",  
+    options: [  
+      { text: "Me", correct: true },  
+      { text: "Avan thane", correct: false, msg: "Kurippe njan thaneya 😁 mellilthe option chooseiko chundari atto 😁💋" },  
+      { text: "option b", correct: false, msg: "Option B aa patti thane" }  
+    ]  
+  }  
+];  
+  
+function loadQuestion() {  
+  document.getElementById("question").innerText = `Question ${index + 1}`;  
+  document.getElementById("text").innerText = quiz[index].q;  
+  
+  const optionsDiv = document.getElementById("options");  
+  optionsDiv.innerHTML = "";  
+  
+  quiz[index].options.forEach(opt => {  
+    const btn = document.createElement("button");  
+    btn.innerText = opt.text;  
+    btn.className = opt.correct ? "correct" : "option";  
+  
+    btn.onclick = () => {  
+      if (opt.correct) {  
+        startHearts();  
+        index++;  
+        index < quiz.length ? loadQuestion() : showValentine();  
+      } else {  
+        showPopup(opt.msg);  
+      }  
+    };  
+  
+    optionsDiv.appendChild(btn);  
+  });  
+}  
+  
+function showPopup(msg) {  
+  const popup = document.getElementById("popup");  
+  popup.innerText = msg;  
+  popup.style.display = "block";  
+  setTimeout(() => popup.style.display = "none", 1200);  
+}  
+  
+function showValentine() {  
+  document.getElementById("card").innerHTML = `  
+    <h1>Booboo… 💖</h1>  
+    <p>Will you be my Valentine? 🥰</p>  
+    <button class="correct" onclick="yes()">YES ❤️</button>  
+    <button class="option" id="noBtn"  
+      onmouseover="moveNo()"  
+      onclick="noClick()">NO 😅</button>  
+  `;  
+}  
+  
+function yes() {  
+  document.getElementById("card").innerHTML = `  
+    <h1>YAYYYY 🎉💘</h1>  
+    <p>Happy Valentine’s Day, Booboo ❤️<br>I love you 🥰</p>  
+  `;  
+}  
+  
+/* ✅ FIXED: moves 5 times, stays where it lands */  
+function moveNo() {  
+  if (noMoves >= maxNoMoves) return;  
+  
+  const btn = document.getElementById("noBtn");  
+  const x = Math.random() * 240 - 120;  
+  const y = Math.random() * 240 - 120;  
+  
+  btn.style.transform = `translate(${x}px, ${y}px)`;  
+  noMoves++;  
+}  
+  
+function noClick() {  
+  showPopup("Oops! You have to click YES ❤️");  
+}  
+  
+/* Hearts */  
+function createHeart() {  
+  const heart = document.createElement("div");  
+  heart.className = "heart";  
+  heart.innerText = "❤️";  
+  heart.style.left = Math.random() * 100 + "vw";  
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";  
+  document.body.appendChild(heart);  
+  setTimeout(() => heart.remove(), 6000);  
+}  
+  
+function startHearts() {  
+  if (!heartsStarted) {  
+    setInterval(createHeart, 400);  
+    heartsStarted = true;  
+  }  
+}  
+  
+loadQuestion();  
+</script>  </body>  
 </html>
