@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hey You 😏</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+    .box {
+      background: rgba(255,255,255,0.85);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    h1 { color: #ff4d6d; margin-bottom: 15px; }
+    a {
+      display: inline-block;
+      padding: 12px 30px;
+      background: #ff4d6d;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      transition: 0.3s;
+    }
+    a:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Hey Booboo 💕</h1>
+    <p>I made something for you…</p>
+    <a href="password.html">Tap to continue 😌</a>
+  </div>
+</body>
+</html>
